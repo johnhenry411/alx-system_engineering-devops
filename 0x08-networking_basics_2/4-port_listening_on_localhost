@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
-# This script displays all active IPv4 IPs
-nc -l 98
+# This script listens on port 98 for incomimg connections
+port = 98
+
+nc -l -p$port
