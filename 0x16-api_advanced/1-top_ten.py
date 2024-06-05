@@ -1,42 +1,18 @@
 #!/usr/bin/python3
-"""
-Script to print hot posts on a given Reddit subreddit.
-"""
+"""Module for task 1"""
 
-import requests
-import sys
 
 def top_ten(subreddit):
-    """Print the titles of the 10 hottest posts on a given subreddit."""
-    # Construct the URL for the subreddit's hot posts in JSON format
-    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
+    """Queries the Reddit API and returns the top 10 hot posts
+    of the subreddit"""
+    import requests
 
-    headers = {
-        "User-Agent": "linux:0x16.api.advanced:v1.0.0 (by /u/bdov_)"
-    }
-
-    params = {
-        "limit": 10
-    }
-
-    response = requests.get(url, headers=headers, params=params,
+    sub_info = requests.get("https://www.reddit.com/r/{}/hot.json?limit=10"
+                            .format(subreddit),
+                            headers={"User-Agent": "My-User-Agent"},
                             allow_redirects=False)
-
-    if response.status_code == 200:
-        results = response.json().get("data")
-        if results:
-            print("Hot posts on r/{}:".format(subreddit))
-            for post in results.get("children"):
-                print(post.get("data").get("title"))
-        else:
-            print(None)
+    if sub_info.status_code >= 300:
+        print('None')
     else:
-        print(None)
-
-if __name__ == "__main__":
-    if len(sys.argv)!= 2:
-        print("Usage: python3 hot_posts.py <subreddit>")
-        sys.exit(1)
-
-    subreddit = sys.argv[1]
-    top_ten(subreddit)
+        [print(child.get("data").get("title"))
+         for child in sub_info.json().get("data").get("children")]
