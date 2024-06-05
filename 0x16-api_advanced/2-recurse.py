@@ -4,7 +4,7 @@ Script to query a list of all hot posts on a given Reddit subreddit.
 """
 
 import requests
-
+import sys
 
 def recurse(subreddit, hot_list=[], after="", count=0):
     """
@@ -59,3 +59,17 @@ def recurse(subreddit, hot_list=[], after="", count=0):
 
     # Return the final list of hot post titles
     return hot_list
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python3 hot_posts.py <subreddit>")
+        sys.exit(1)
+
+    subreddit = sys.argv[1]
+    print("Hot posts on r/{}:".format(subreddit))
+    hot_posts = recurse(subreddit)
+    if hot_posts is not None:
+        for post in hot_posts:
+            print(post)
+    else:
+        print("Subreddit not found")
