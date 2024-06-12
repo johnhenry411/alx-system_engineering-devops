@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
-# This script listens on port 98 for incomimg connections
-port = 98
-
-nc -l -p$port
+# Port listening on localhost
+nc -lk localhost 98
