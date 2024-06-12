@@ -1,13 +1,4 @@
 #!/usr/bin/env bash
-# This script displays all active IPv4 IPs
-
-
-# Use the 'ip' command to list all network interfaces and their IP addresses
-interfaces=$(ip addr show | awk '/inet / {print $2}' | cut -d'/' -f1)
-
-# Loop through the list of interfaces and print their IP addresses
-echo "Active IPv4 IP Addresses on this Machine:"
-for interface in $interfaces; do
-    echo "$interface"
-done
+# Show attached IPs
+ifconfig | grep "inet " | tr ":" " " | awk '{print $3}'
 
